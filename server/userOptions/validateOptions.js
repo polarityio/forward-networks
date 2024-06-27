@@ -3,8 +3,10 @@ const { validateStringOptions, validateUrlOption } = require('./utils');
 const validateOptions = async (options, callback) => {
   const stringOptionsErrorMessages = {
     url: '* Required',
-    clientId: '* Required',
-    clientSecret: '* Required'
+    username: '* Required',
+    password: '* Required',
+    networkIdNumber: '* Required',
+    signalSourceIPAddress: '* Required'
   };
 
   const stringValidationErrors = validateStringOptions(

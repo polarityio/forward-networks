@@ -1,5 +1,5 @@
-const getAlerts = require('./getAlerts');
+const getNetworkPaths = require('./getNetworkPaths');
 
 module.exports = {
-  getAlerts
+  getNetworkPaths
 };

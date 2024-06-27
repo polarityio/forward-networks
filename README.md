@@ -1,20 +1,41 @@
-# Polarity - Dataminr Integration
+# Polarity - Forward Networks Integration
 
-Dataminr delivers the earliest warnings on high impact events and critical information far in advance of other sources.
+Explore what Forward Network can do for your network With one single platform, users can improve network security, query the network like a database, and finally gain visibility across instances.
 
-The Polarity Dataminr integration allows Polarity to search Dataminr by all entities to get related Alerts.  The integration will return the 10 most recent related Alerts.
+The Polarity Forward Networks integration allows you to search Forward Networks by IP Addresses to get Network Path Information both To and From searched IP Addresses.
 
-For more information on Dataminr, please visit [official website](https://www.dataminr.com/).
+<div style="display:flex; align-items: flex-start; justify-content:flex-start; align-items:flex-start; margin-bottom: 7px">
+  <img width="350" alt="Integration Example Paths" src="./assets/overlay.png">
+</div>
 
-## Dataminr Integration Options
-### Dataminr API URL
-The base URL of the Dataminr API including the schema (i.e., https://)
+For more information on Forward Networks, please visit [official website](https://www.Forward Networks.com/).
 
-### Client ID
-Your Client ID Credential
+## Forward Networks Integration Options
+### Forward Networks API URL
+The base URL of the Forward Networks API including the schema (i.e., https://)
 
-### Client Secret
-Your Client Secret Credential
+### Username
+Your Username Credential
+
+### Password
+Your Password Credential
+     
+### Network ID Number
+The 6-digit Network ID Number associated with the network you want to search your IPs on. (Found in Dashboard URL https://...?networkId=######)
+     
+### Snapshot ID Number
+The 6-digit Snapshot ID Number associated with the network you want to search your IPs on. (Found in Dashboard URL https://...&snapshotId=######)
+      
+### Signal Source Query Type
+When Querying IP Addresses, this determines if your search Network Paths Query is either To, From, or Both in relation to your Searched IP.
+
+- (Default) Signal both To and From Searched IP
+- Signal From Searched IP
+- Signal To Searched IP"
+  
+### Signal Source IP Address
+The IP Address you search other IP Addresses both to and from. Default `0.0.0.0/0` (i.e. Any Network Traffic)
+
 
 ## Installation Instructions
 

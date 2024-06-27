@@ -1,3 +1,3 @@
 module.exports = {
-  MAX_PAGE_SIZE: 10
+  MAX_PAGE_SIZE: 15
 };
