@@ -1,4 +1,5 @@
 {
+  "polarityIntegrationUuid": "36257f50-34a5-11ef-8735-cf9f5eb3e6c2",
   "name": "Forward Networks",
   "acronym": "FN",
   "description": "Get Network Path Information both To and From searched IP Addresses",
