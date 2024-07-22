@@ -2,7 +2,7 @@ module.exports = {
   name: 'Forward Networks',
   acronym: 'FN',
   description: 'Get Network Path Information both To and From searched IP Addresses',
-  entityTypes: ['IPv4', 'IPv6'],
+  entityTypes: ['IPv4', 'IPv4CIDR', 'IPv6'],
   styles: ['./client/styles.less'],
   defaultColor: 'light-blue',
   onDemandOnly: true,
@@ -40,7 +40,7 @@ module.exports = {
       name: 'Username',
       description: 'Your Username Credential',
       default: '',
-      type: 'password',
+      type: 'text',
       userCanEdit: true,
       adminOnly: false
     },
