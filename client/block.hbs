@@ -1,391 +1,217 @@
-<div class="alerts">
-  {{#if (eq details.alerts.length 10)}}
-    <div>
-      <a href="https://app.dataminr.com/app/dashboard/search" class="p-link">
-        More Results in Dataminr (Click `Edit search`)
-        {{fa-icon "external-link-square" class="external-link-icon"}}</a>
-    </div>
+<div class="header-section">
+  <ul class="nav nav-tabs mt-2">
+    {{#if fromNetworkPaths}}
+      <li class="nav-item">
+        <a
+          {{action "changeTab" "fromNetworkPaths"}}
+          class="nav-link {{if (eq activeTab 'fromNetworkPaths') 'active'}}"
+        >
+          From Paths
+        </a>
+      </li>
+    {{/if}}
+    {{#if toNetworkPaths}}
+      <li class="nav-item">
+        <a
+          {{action "changeTab" "toNetworkPaths"}}
+          class="nav-link {{if (eq activeTab 'toNetworkPaths') 'active'}}"
+        >
+          To Paths
+        </a>
+      </li>
+    {{/if}}
+  </ul>
+</div>
+<div class="results">
+  {{#if (eq activeTab "fromNetworkPaths")}}
+    <h1 class="mb-2 p-title title-ips">
+      <div class="title-ip">{{block.entity.value}}</div>{{#if
+        fromNetwork.srcIpLocationType
+      }}<div>({{fromNetwork.srcIpLocationType}})</div>{{/if}}
+      {{fa-icon icon="arrow-right" fixedWidth=true}}
+      <div class="title-ip">{{block.userOptions.signalSourceIPAddress}}</div>{{#if
+        fromNetwork.dstIpLocationType
+      }}<div>({{fromNetwork.dstIpLocationType}})</div>{{/if}}
+    </h1>
+    {{#each fromNetworkPaths as |fromNetworkPath index|}}
+      <div class="mb-3">
+        <div class="mb-1 path-details">
+          <h1 class="p-title">
+            {{fa-icon icon="info-circle" fixedWidth=true}}
+            Path Details
+          </h1>
+          {{#if fromNetworkPath.hops.0.deviceName}}
+            <div>
+              <a
+                href="https://fwd.app/?/search?networkId={{block.userOptions.networkIdNumber}}&snapshotId={{block.userOptions.snapshotIdNumber}}&q=f({{block.userOptions.signalSourceIPAddress}}!{{fromNetworkPath.hops.0.deviceName}})(ipv4_dst.{{block.entity.value}})m(permit_all)"
+              >
+                View Details in Forward Networks
+                {{fa-icon icon="external-link" fixedWidth=true}}
+              </a>
+            </div>
+          {{else if fromNetwork.queryUrl}}
+            <div>
+              <a href="{{fromNetwork.queryUrl}}">
+                View Details in Forward Networks
+                {{fa-icon icon="external-link" fixedWidth=true}}
+              </a>
+            </div>
+          {{/if}}
+          {{#if fromNetworkPath.forwardingOutcome}}
+            <div>
+              <span class="p-key">Forwarding Outcome:</span>
+              <span class="p-value p-block">{{fromNetworkPath.forwardingOutcome}}</span>
+            </div>
+          {{/if}}
+          {{#if fromNetworkPath.securityOutcome}}
+            <div>
+              <span class="p-key">Security Outcome:</span>
+              <span class="p-value p-block">{{fromNetworkPath.securityOutcome}}</span>
+            </div>
+          {{/if}}
+        </div>
+
+        <div class="network-paths">
+          <h1 class="p-title">
+            {{fa-icon icon="link" fixedWidth=true}}
+            Network Paths
+          </h1>
+          {{#each fromNetworkPath.hops as |hop hopIndex|}}
+            <div class="mb-1 path-hop">
+              {{#if fromNetworkPath.hops.0.deviceName}}
+                <div class="device-name">
+                  <a
+                    href="https://fwd.app/?/search?networkId={{block.userOptions.networkIdNumber}}&snapshotId={{block.userOptions.snapshotIdNumber}}&q=f({{block.userOptions.signalSourceIPAddress}}!{{fromNetworkPath.hops.0.deviceName}})(ipv4_dst.{{block.entity.value}})m(permit_all)&device={{hopIndex}}"
+                  >
+                    {{hop.deviceName}}
+                    ({{hop.deviceType}})
+                    {{fa-icon icon="external-link" fixedWidth=true}}
+                  </a>
+                </div>
+              {{else}}
+                <div class="device-name">
+                  {{hop.deviceName}}
+                  ({{hop.deviceType}})
+                </div>
+              {{/if}}
+              {{#if hop.ingressInterface}}
+                <div>
+                  <span class="p-key">Ingress Interface:</span>
+                  <span class="p-value p-block">{{uppercase hop.ingressInterface}}</span>
+                </div>
+              {{/if}}
+              {{#if hop.egressInterface}}
+                <div>
+                  <span class="p-key">Egress Interface:</span>
+                  <span class="p-value p-block">{{uppercase hop.egressInterface}}</span>
+                </div>
+              {{/if}}
+              {{#if hop.behaviors}}
+                <div>
+                  <span class="p-key">Behaviors:</span>
+                  <span class="p-value p-block">{{join ", " hop.behaviors}}</span>
+                </div>
+              {{/if}}
+            </div>
+          {{/each}}
+        </div>
+      </div>
+    {{/each}}
   {{/if}}
-  {{#each details.alerts as |alert alertIndex|}}
-    <div class="mb-3">
-      <h1 class="p-title">
-        {{fa-icon "laptop" fixedWidth=true}}
-        Alert
-      </h1>
-      {{#if alert.expandAlertURL}}
-        <div>
-          <a href="{{alert.expandAlertURL}}" class="p-link">View in Dataminr
-            {{fa-icon "external-link-square" class="external-link-icon"}}</a>
-        </div>
-      {{/if}}
-      {{#if alert.eventLocation.name}}
-        <div class="mb-1 mt-1">
-          <span class="p-block">
-            {{fa-icon "map-marker-alt" fixedWidth=true}}
-            {{alert.eventLocation.name}}
-          </span>
-        </div>
-      {{/if}}
-      {{#if alert.eventMapLargeURL}}
-        <div>
-          <img src="{{alert.eventMapLargeURL}}" alt="Map View" />
-        </div>
-      {{/if}}
-      {{#if alert.caption}}
-        <div class="mb-1 mt-1">
-          <span class="p-block">
-            {{alert.caption}}
-          </span>
-        </div>
-      {{/if}}
-      {{#if alert.eventTime}}
-        <div>
-          <span class="p-key">Published:</span>
-          <span class="p-value">{{moment-format
-              alert.eventTime
-              "MM/DD/YYYY HH:mm:ss"
-              timeZone=timezone
-            }}</span>
-        </div>
-      {{/if}}
-      {{#if alert.companies}}
-        <div>
-          <span class="p-key">Companies:</span>
-          <span class="p-value">
-            {{#each alert.companies as |company index|}}
-              {{company.name}}{{#if
-                (not (eq (sub alert.companies.length 1) index))
-              }},{{/if}}
-            {{/each}}
-          </span>
-        </div>
-      {{/if}}
-      {{#if alert.categories}}
-        <div>
-          <span class="p-key">Categories:</span>
-          <span class="p-value">
-            {{#each alert.categories as |category index|}}
-              {{category.name}}{{#if
-                (not (eq (sub alert.categories.length 1) index))
-              }},{{/if}}
-            {{/each}}
-          </span>
-        </div>
-      {{/if}}
-      {{#if alert.relatedTerms}}
-        <div>
-          <span class="p-key">Alert Reference Terms:</span>
-          <span class="p-value">
-            {{#each alert.relatedTerms as |relatedTerm index|}}
-              <a href="{{relatedTerm.url}}" class="p-link">{{relatedTerm.text}}
-                {{fa-icon "external-link-square" class="external-link-icon"}}</a>{{#if
-                (not (eq (sub alert.relatedTerms.length 1) index))
-              }},{{/if}}
-            {{/each}}
-          </span>
-        </div>
-      {{/if}}
 
-      {{#with alert.metadata.cyber as |metadata|}}
-        {{#if metadata.vulnerabilities.length}}
-          {{#if (get (get expandableTitleStates "vulnerabilities") alertIndex)}}
-            <a
-              class="expandable-title"
-              {{on "click" (action "toggleExpandableTitle" alertIndex "vulnerabilities")}}
-            >
-              <span class="text">{{fa-icon icon="bug" fixedWidth=true}}
-                Vulnerabilities</span>
-              {{fa-icon icon="angle-up"}}
-            </a>
-            <div class="ml-2 vulnerabilities">
-              {{#each metadata.vulnerabilities as |vulnerability vulnIndex|}}
-                <div class="vulnerability mb-3">
-                  {{#if vulnerability.id}}
-                    <div>
-                      <span class="p-key">CVE:</span>
-                      <span class="p-value">{{vulnerability.id}}</span>
-                    </div>
-                  {{/if}}
-                  {{#if vulnerability.cvss}}
-                    <div>
-                      <span class="p-key">CVSS:</span>
-                      <span class="p-value">{{vulnerability.cvss}}</span>
-                    </div>
-                  {{/if}}
-                  {{#if vulnerability.products.length}}
-                    {{#if
-                      (get
-                        (get
-                          expandableTitleStates (concat "vulnRelatedProducts" vulnIndex)
-                        )
-                        alertIndex
-                      )
-                    }}
-                      <a
-                        class="expandable-title"
-                        {{on
-                          "click"
-                          (action
-                            "toggleExpandableTitle"
-                            alertIndex
-                            (concat "vulnRelatedProducts" vulnIndex)
-                          )
-                        }}
-                      >
-                        <span class="text">{{fa-icon icon="box" fixedWidth=true}}
-                          Related Products</span>
-                        {{fa-icon icon="angle-up"}}
-                      </a>
-                      <div class="ml-2 vulnerability-exploit-links gray-boxes">
-                        {{#each vulnerability.products as |product productIndex|}}
-                          <div class="gray-box">
-                            {{titleize product.productVendor}}
-                            {{titleize (humanize (dasherize product.productName))}}{{#if
-                              (and
-                                product.productVersion
-                                (not (eq product.productVersion " "))
-                              )
-                            }} (V{{product.productVersion}}){{/if}}
-                          </div>
-                        {{/each}}
-                      </div>
-                    {{else}}
-                      <a
-                        class="expandable-title"
-                        {{on
-                          "click"
-                          (action
-                            "toggleExpandableTitle"
-                            alertIndex
-                            (concat "vulnRelatedProducts" vulnIndex)
-                          )
-                        }}
-                      >
-                        <span class="text">{{fa-icon icon="box" fixedWidth=true}}
-                          Related Products</span>
-                        {{fa-icon icon="angle-down"}}
-                      </a>
-                    {{/if}}
-                  {{/if}}
-                  {{#if vulnerability.exploitPocLinks}}
-                    {{#if
-                      (get
-                        (get expandableTitleStates (concat "vulnExploitLinks" vulnIndex))
-                        alertIndex
-                      )
-                    }}
-                      <a
-                        class="expandable-title"
-                        {{on
-                          "click"
-                          (action
-                            "toggleExpandableTitle"
-                            alertIndex
-                            (concat "vulnExploitLinks" vulnIndex)
-                          )
-                        }}
-                      >
-                        <span class="text">{{fa-icon icon="link" fixedWidth=true}}
-                          Exploit POC Links</span>
-                        {{fa-icon icon="angle-up"}}
-                      </a>
-                      <div class="ml-2 vulnerability-exploit-links">
-                        {{#each vulnerability.exploitPocLinks as |link index|}}
-                          <div class="mb-1">
-                            <a href="{{link}}" class="p-link">{{link}}
-                              {{fa-icon
-                                "external-link-square"
-                                class="external-link-icon"
-                              }}</a>
-                          </div>
-                        {{/each}}
-                      </div>
-                    {{else}}
-                      <a
-                        class="expandable-title"
-                        {{on
-                          "click"
-                          (action
-                            "toggleExpandableTitle"
-                            alertIndex
-                            (concat "vulnExploitLinks" vulnIndex)
-                          )
-                        }}
-                      >
-                        <span class="text">{{fa-icon icon="link" fixedWidth=true}}
-                          Exploit POC Links</span>
-                        {{fa-icon icon="angle-down"}}
-                      </a>
-                    {{/if}}
-                  {{/if}}
-                </div>
-              {{/each}}
+  {{#if (eq activeTab "toNetworkPaths")}}
+    <h1 class="mb-2 p-title title-ips">
+      <div class="title-ip">{{block.userOptions.signalSourceIPAddress}}</div>{{#if
+        toNetwork.srcIpLocationType
+      }}<div>({{toNetwork.srcIpLocationType}})</div>{{/if}}
+      {{fa-icon icon="arrow-right" fixedWidth=true}}
+      <div class="title-ip">{{block.entity.value}}</div>{{#if
+        toNetwork.dstIpLocationType
+      }}<div>({{toNetwork.dstIpLocationType}})</div>{{/if}}
+    </h1>
+    {{#each toNetworkPaths as |toNetworkPath index|}}
+      <div class="mb-3">
+        <div class="mb-1 path-details">
+          <h1 class="p-title">
+            {{fa-icon icon="info-circle" fixedWidth=true}}
+            Path Details
+          </h1>
+          {{#if toNetworkPath.hops.0.deviceName}}
+            <div>
+              <a
+                href="https://fwd.app/?/search?networkId={{block.userOptions.networkIdNumber}}&snapshotId={{block.userOptions.snapshotIdNumber}}&q=f({{block.entity.value}}!{{toNetworkPath.hops.0.deviceName}})(ipv4_dst.{{block.userOptions.signalSourceIPAddress}})m(permit_all)"
+              >
+                View Details in Forward Networks
+                {{fa-icon icon="external-link" fixedWidth=true}}
+              </a>
             </div>
-          {{else}}
-            <a
-              class="expandable-title"
-              {{on "click" (action "toggleExpandableTitle" alertIndex "vulnerabilities")}}
-            >
-              <span class="text">{{fa-icon icon="bug" fixedWidth=true}}
-                Vulnerabilities</span>
-              {{fa-icon icon="angle-down"}}
-            </a>
+          {{else if toNetwork.queryUrl}}
+            <div>
+              <a href="{{toNetwork.queryUrl}}">
+                View Details in Forward Networks
+                {{fa-icon icon="external-link" fixedWidth=true}}
+              </a>
+            </div>
           {{/if}}
-        {{/if}}
+          {{#if toNetworkPath.forwardingOutcome}}
+            <div>
+              <span class="p-key">Forwarding Outcome:</span>
+              <span class="p-value p-block">{{toNetworkPath.forwardingOutcome}}</span>
+            </div>
+          {{/if}}
+          {{#if toNetworkPath.securityOutcome}}
+            <div>
+              <span class="p-key">Security Outcome:</span>
+              <span class="p-value p-block">{{toNetworkPath.securityOutcome}}</span>
+            </div>
+          {{/if}}
+        </div>
 
-        {{#if
-          (or
-            metadata.threats.length
-            metadata.URLs.length
-            metadata.addresses.length
-            metadata.asns.length
-            metadata.orgs.length
-            metadata.hashes.length
-            metadata.products.length
-            metadata.malwares.length
-          )
-        }}
-          {{#if (get (get expandableTitleStates "metadata") alertIndex)}}
-            <a
-              class="expandable-title"
-              {{on "click" (action "toggleExpandableTitle" alertIndex "metadata")}}
-            >
-              <span class="text">{{fa-icon icon="database" fixedWidth=true}}
-                Metadata</span>
-              {{fa-icon icon="angle-up"}}
-            </a>
-            <div class="ml-2 metadata">
-              {{#if metadata.threats.length}}
-                <div>
-                  <span class="p-key">Threats:</span>
-                  <span class="p-value">{{join ", " metadata.threats}}</span>
+        <div class="network-paths">
+          <h1 class="p-title">
+            {{fa-icon icon="link" fixedWidth=true}}
+            Network Paths
+          </h1>
+          {{#each toNetworkPath.hops as |hop hopIndex|}}
+            <div class="mb-1 path-hop">
+              {{#if toNetworkPath.hops.0.deviceName}}
+                <div class="device-name">
+                  <a
+                    href="https://fwd.app/?/search?networkId={{block.userOptions.networkIdNumber}}&snapshotId={{block.userOptions.snapshotIdNumber}}&q=f({{block.entity.value}}!{{toNetworkPath.hops.0.deviceName}})(ipv4_dst.{{block.userOptions.signalSourceIPAddress}})m(permit_all)&device={{hopIndex}}"
+                  >
+                    {{hop.deviceName}}
+                    ({{hop.deviceType}})
+                    {{fa-icon icon="external-link" fixedWidth=true}}
+                  </a>
+                </div>
+              {{else}}
+                <div class="device-name">
+                  {{hop.deviceName}}
+                  ({{hop.deviceType}})
                 </div>
               {{/if}}
-              {{#if metadata.URLs.length}}
+              {{#if hop.ingressInterface}}
                 <div>
-                  <span class="p-key">URLs:</span>
-                  <span class="p-value">{{join ", " metadata.URLs}}</span>
+                  <span class="p-key">Ingress Interface:</span>
+                  <span class="p-value p-block">{{uppercase hop.ingressInterface}}</span>
                 </div>
               {{/if}}
-              {{#if metadata.addresses.length}}
+              {{#if hop.egressInterface}}
                 <div>
-                  <span class="p-key">Addresses:</span>
-                  <span class="p-value">
-                    {{#each metadata.addresses as |address index|}}
-                      {{address.ip}}:{{address.port}}{{#if
-                        (not (eq (sub metadata.addresses.length 1) index))
-                      }},{{/if}}
-                    {{/each}}
-                  </span>
+                  <span class="p-key">Egress Interface:</span>
+                  <span class="p-value p-block">{{uppercase hop.egressInterface}}</span>
                 </div>
               {{/if}}
-              {{#if metadata.asns.length}}
+              {{#if hop.behaviors}}
                 <div>
-                  <span class="p-key">ASNs:</span>
-                  <span class="p-value">{{join ", " metadata.asns}}</span>
-                </div>
-              {{/if}}
-              {{#if metadata.orgs.length}}
-                <div>
-                  <span class="p-key">Organizations:</span>
-                  <span class="p-value">{{join ", " metadata.orgs}}</span>
-                </div>
-              {{/if}}
-              {{#if metadata.hashes.length}}
-                <div>
-                  <span class="p-key">Hashes:</span>
-                  <span class="p-value">{{join ", " metadata.hashes}}</span>
-                </div>
-              {{/if}}
-              {{#if metadata.products.length}}
-                <div>
-                  <span class="p-key">Products:</span>
-                  <span class="p-value">{{join ", " metadata.products}}</span>
-                </div>
-              {{/if}}
-              {{#if metadata.malwares.length}}
-                <div>
-                  <span class="p-key">Malwares:</span>
-                  <span class="p-value">{{join ", " metadata.malwares}}</span>
+                  <span class="p-key">Behaviors:</span>
+                  <span class="p-value p-block">{{join ", " hop.behaviors}}</span>
                 </div>
               {{/if}}
             </div>
-          {{else}}
-            <a
-              class="expandable-title"
-              {{on "click" (action "toggleExpandableTitle" alertIndex "metadata")}}
-            >
-              <span class="text">{{fa-icon icon="database" fixedWidth=true}}
-                Metadata</span>
-              {{fa-icon icon="angle-down"}}
-            </a>
-          {{/if}}
-        {{/if}}
-      {{/with}}
-
-      {{#if alert.post.link}}
-        {{#if (get (get expandableTitleStates "post") alertIndex)}}
-          <a
-            class="expandable-title"
-            {{on "click" (action "toggleExpandableTitle" alertIndex "post")}}
-          >
-            <span class="text">{{fa-icon icon="clone" fixedWidth=true}}
-              Post</span>
-            {{fa-icon icon="angle-up"}}
-          </a>
-          <div class="ml-2 post">
-            {{#if alert.post.link}}
-              <div>
-                <a href="{{alert.post.link}}" class="p-link">View Post
-                  {{fa-icon "external-link-square" class="external-link-icon"}}</a>
-              </div>
-            {{/if}}
-            {{#if alert.source.displayName}}
-              <div>
-                <span class="p-key">Poster:</span>
-                <span class="p-value">{{alert.source.displayName}}</span>
-              </div>
-            {{/if}}
-            {{#if alert.post.timestamp}}
-              <div>
-                <span class="p-key">Posted On:</span>
-                <span class="p-value">{{moment-format
-                    alert.post.timestamp
-                    "MM/DD/YYYY HH:mm:ss"
-                    timeZone=timezone
-                  }}</span>
-              </div>
-            {{/if}}
-            {{#if alert.post.media}}
-              {{#each alert.post.media as |postMedia|}}
-                {{#if (eq postMedia.type "photo")}}
-                  <div>
-                    <img
-                      src="{{postMedia.media_url}}"
-                      alt="{{postMedia.display_url}} from {{postMedia.source}}"
-                    />
-                  </div>
-                {{/if}}
-                {{#if (eq postMedia.type "link")}}
-                  <div>
-                    <a href="{{postMedia.url}}" class="p-link">{{postMedia.display_url}}
-                      {{fa-icon "external-link-square" class="external-link-icon"}}</a>
-                  </div>
-                {{/if}}
-              {{/each}}
-            {{/if}}
-          </div>
-        {{else}}
-          <a
-            class="expandable-title"
-            {{on "click" (action "toggleExpandableTitle" alertIndex "post")}}
-          >
-            <span class="text">{{fa-icon icon="clone" fixedWidth=true}}
-              Post</span>
-            {{fa-icon icon="angle-down"}}
-          </a>
-        {{/if}}
-      {{/if}}
-    </div>
-  {{/each}}
+          {{/each}}
+        </div>
+      </div>
+    {{/each}}
+  {{/if}}
 </div>

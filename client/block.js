@@ -1,37 +1,25 @@
 'use strict';
 polarity.export = PolarityComponent.extend({
   details: Ember.computed.alias('block.data.details'),
-  expandableTitleStates: Ember.computed.alias('block._state.expandableTitleStates'),
+  fromNetwork: Ember.computed.alias('details.fromNetwork'),
+  toNetwork: Ember.computed.alias('details.toNetwork'),
+  fromNetworkPaths: Ember.computed.alias('details.fromNetworkPaths'),
+  toNetworkPaths: Ember.computed.alias('details.toNetworkPaths'),
   timezone: Ember.computed('Intl', function () {
     return Intl.DateTimeFormat().resolvedOptions().timeZone;
   }),
+  activeTab: 'fromNetworkPaths',
   init() {
-    if (!this.get('block._state')) {
-      this.set('block._state', {});
-      this.set('block._state.expandableTitleStates', {});
-    }
+    this.set(
+      'activeTab',
+      this.fromNetworkPaths.length > 0 ? 'fromNetworkPaths' : 'toNetworkPaths'
+    );
 
     this._super(...arguments);
   },
   actions: {
-    toggleExpandableTitle: function (index, type) {
-      this.set(
-        `block._state.expandableTitleStates`,
-        Object.assign({}, this.get('block._state.expandableTitleStates'), {
-          [type]: Object.assign(
-            {},
-            this.get('block._state.expandableTitleStates')[type],
-            {
-              [index]: !(
-                this.get('block._state.expandableTitleStates')[type] &&
-                this.get('block._state.expandableTitleStates')[type][index]
-              )
-            }
-          )
-        })
-      );
-
-      this.get('block').notifyPropertyChange('data');
+    changeTab: function (tabName) {
+      this.set('activeTab', tabName);
     }
   }
 });

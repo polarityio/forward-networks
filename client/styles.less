@@ -3,49 +3,49 @@
   word-break: break-word !important;
 }
 
-pre {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  max-height: 200px;
-  padding: 5px;
-  margin-top: 5px;
+div.results {
+  margin-top: 10px;
 }
 
-.external-link-icon {
-  font-size: 8px;
-  margin-bottom: 1px;
-}
-
-img {
-  width: 100%;
-}
-
-.expandable-title {
-  display: block;
-  color: #5ccd18 !important;
-  font-weight: 600;
-  margin-bottom: 5px;
-  margin-top: 3px;
-
-  .text {
-    color: #5ccd18 !important;
-    border-bottom: 1px solid #5ccd18;
-    .desc {
-      color: black !important;
-      font-weight: 400 !important;
-    }
+.p-title {
+  font-size: 14px;
+  &.title-ips {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+  .title-ip {
+    font-size: 15px;
+    font-weight: 700;
+    font-style: italic;
   }
 }
 
-.gray-boxes {
-  display: flex;
-  flex-wrap: wrap;
+.p-block {
+  word-wrap: break-word;
+  word-break: break-word;
+}
 
-  .gray-box {
-    padding: 3px 8px;
-    margin-bottom: 5px;
-    margin-left: 5px;
-    background-color: lightgray;
-    border-radius: 5px;
+.path-hop {
+  .device-name {
+    font-size: 13px;
+    font-weight: 500;
+    font-style: italic;
+  }
+}
+
+.p-title svg {
+  font-size: 15px !important;
+}
+
+.path-details {
+  .p-title {
+    font-weight: 500;
+  }
+}
+
+.network-paths {
+  .p-title {
+    font-weight: 300;
   }
 }
