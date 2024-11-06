@@ -20,12 +20,16 @@ const requestWithDefaults = createRequestWithDefaults({
     json: true
   }),
   postprocessRequestFailure: (error) => {
-    const errorResponseBody = JSON.parse(error.description);
-    error.message = `${error.message} - (${error.status})${
-      errorResponseBody.message || errorResponseBody.errorMessage
-        ? `| ${errorResponseBody.message || errorResponseBody.errorMessage}`
-        : ''
-    }`;
+    let errorResponseBody;
+    try {
+      errorResponseBody = JSON.parse(error.description);
+
+      error.message = `${error.message} - (${error.status})${
+        errorResponseBody.message || errorResponseBody.errorMessage
+          ? `| ${errorResponseBody.message || errorResponseBody.errorMessage}`
+          : ''
+      }`;
+    } catch (e) {}
 
     throw error;
   }
