@@ -15,13 +15,6 @@
       "file": "./client/block.hbs"
     }
   },
-  "request": {
-    "cert": "",
-    "key": "",
-    "passphrase": "",
-    "ca": "",
-    "proxy": ""
-  },
   "logging": {
     "level": "info"
   },
@@ -30,6 +23,15 @@
       "key": "url",
       "name": "Forward Networks API URL",
       "description": "The base URL of the Forward Networks API including the schema (i.e., https://)",
+      "default": "https://fwd.app",
+      "type": "text",
+      "userCanEdit": false,
+      "adminOnly": true
+    },
+    {
+      "key": "uiUrl",
+      "name": "Forward Networks UI URL",
+      "description": "The base URL of the Forward Networks UI including the schema (i.e., https://)",
       "default": "https://fwd.app",
       "type": "text",
       "userCanEdit": false,

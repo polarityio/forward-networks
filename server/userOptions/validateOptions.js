@@ -3,6 +3,7 @@ const { validateStringOptions, validateUrlOption } = require('./utils');
 const validateOptions = async (options, callback) => {
   const stringOptionsErrorMessages = {
     url: '* Required',
+    uiUrl: '* Required',
     username: '* Required',
     password: '* Required',
     networkIdNumber: '* Required',

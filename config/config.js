@@ -36,6 +36,16 @@ module.exports = {
       adminOnly: true
     },
     {
+      key: 'uiUrl',
+      name: 'Forward Networks UI URL',
+      description:
+        'The base URL of the Forward Networks UI including the schema (i.e., https://)',
+      default: 'https://fwd.app',
+      type: 'text',
+      userCanEdit: false,
+      adminOnly: true
+    },
+    {
       key: 'username',
       name: 'Username',
       description: 'Your Username Credential',
