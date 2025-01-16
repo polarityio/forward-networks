@@ -43,7 +43,7 @@ module.exports = {
       default: 'https://fwd.app',
       type: 'text',
       userCanEdit: false,
-      adminOnly: true
+      adminOnly: false
     },
     {
       key: 'username',
