@@ -14,6 +14,9 @@ For more information on Forward Networks, please visit [official website](https:
 ### Forward Networks API URL
 The base URL of the Forward Networks API including the schema (i.e., https://)
 
+### Forward Networks UI URL
+The base URL of the Forward Networks UI including the schema (i.e., https://)
+
 ### Username
 Your Username Credential
 
