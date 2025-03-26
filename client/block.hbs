@@ -81,7 +81,7 @@
               {{#if fromNetworkPath.hops.0.deviceName}}
                 <div class="device-name">
                   <a
-                    href="https://fwd.app/?/search?networkId={{block.userOptions.networkIdNumber}}&snapshotId={{block.userOptions.snapshotIdNumber}}&q=f({{block.userOptions.signalSourceIPAddress}}!{{fromNetworkPath.hops.0.deviceName}})(ipv4_dst.{{block.entity.value}})m(permit_all)&device={{hopIndex}}"
+                    href="{{block.userOptions.url}}/?/search?networkId={{block.userOptions.networkIdNumber}}&snapshotId={{block.userOptions.snapshotIdNumber}}&q=f({{block.userOptions.signalSourceIPAddress}}!{{fromNetworkPath.hops.0.deviceName}})(ipv4_dst.{{block.entity.value}})m(permit_all)&device={{hopIndex}}"
                   >
                     {{hop.deviceName}}
                     ({{hop.deviceType}})
@@ -139,7 +139,7 @@
           {{#if toNetworkPath.hops.0.deviceName}}
             <div>
               <a
-                href="https://fwd.app/?/search?networkId={{block.userOptions.networkIdNumber}}&snapshotId={{block.userOptions.snapshotIdNumber}}&q=f({{block.entity.value}}!{{toNetworkPath.hops.0.deviceName}})(ipv4_dst.{{block.userOptions.signalSourceIPAddress}})m(permit_all)"
+                href="{{block.userOptions.url}}/?/search?networkId={{block.userOptions.networkIdNumber}}&snapshotId={{block.userOptions.snapshotIdNumber}}&q=f({{block.entity.value}}!{{toNetworkPath.hops.0.deviceName}})(ipv4_dst.{{block.userOptions.signalSourceIPAddress}})m(permit_all)"
               >
                 View Details in Forward Networks
                 {{fa-icon icon="external-link" fixedWidth=true}}
@@ -177,7 +177,7 @@
               {{#if toNetworkPath.hops.0.deviceName}}
                 <div class="device-name">
                   <a
-                    href="https://fwd.app/?/search?networkId={{block.userOptions.networkIdNumber}}&snapshotId={{block.userOptions.snapshotIdNumber}}&q=f({{block.entity.value}}!{{toNetworkPath.hops.0.deviceName}})(ipv4_dst.{{block.userOptions.signalSourceIPAddress}})m(permit_all)&device={{hopIndex}}"
+                    href="{{block.userOptions.url}}/?/search?networkId={{block.userOptions.networkIdNumber}}&snapshotId={{block.userOptions.snapshotIdNumber}}&q=f({{block.entity.value}}!{{toNetworkPath.hops.0.deviceName}})(ipv4_dst.{{block.userOptions.signalSourceIPAddress}})m(permit_all)&device={{hopIndex}}"
                   >
                     {{hop.deviceName}}
                     ({{hop.deviceType}})
